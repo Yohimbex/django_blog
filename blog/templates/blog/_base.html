@@ -1,0 +1,47 @@
+{% load blog_tags %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Yohimbe blog</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+</head>
+<body>
+<main>
+    <nav class="navbar is-info">
+        <div class="navbar-brand">
+            <a href="{% url 'blog:post_list' %}" class="navbar-item"><strong>Main page</strong></a>
+            <a href="{% url 'admin:index' %}" class="navbar-item">Login</a>
+        </div>
+    </nav>
+    <section class="section">
+        <div class="container">
+            <div id="sidebar">
+                <p>Blog application contains <strong>{% total_posts %}</strong> posts.</p>
+                <br>
+                <h3>The latest posts:</h3>
+                {% show_latest_posts 3 %}
+                <br>
+                <h3>The most commented posts:</h3>
+                {% get_most_commented_posts as the_most_commented_posts %}
+                <ul>
+                    {% for post in the_most_commented_posts %}
+                    <li>
+                        <a href="{{ post.get_absolute_url }}">• {{ post.title }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {% block content %}
+            {% endblock %}
+        </div>
+    </section>
+</main>
+</body>
+</html>
